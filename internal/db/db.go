@@ -207,21 +207,40 @@ func RemoveSource(db dbConnection, sourceID int64) error {
 	return nil
 }
 
-func AddDomains(db dbConnection, domains []string, sourceID int64) error {
-	stmt, err := db.Prepare("INSERT INTO hole_entries (entry_domain, source_id) VALUES (?, ?)")
+func AddDomains(db dbConnection, domains []string, sourceID int64) (int, error) {
+	existsStmt, err := db.Prepare("SELECT 1 FROM hole_entries WHERE entry_domain = ? AND source_id = ?")
 	if err != nil {
-		return err
+		return 0, err
 	}
-	defer stmt.Close()
+	defer existsStmt.Close()
+
+	addStmt, err := db.Prepare("INSERT INTO hole_entries (entry_domain, source_id) VALUES (?, ?)")
+	if err != nil {
+		return 0, err
+	}
+	defer addStmt.Close()
+
+	domainsCount := 0
 
 	for _, domain := range domains {
-		_, err = stmt.Exec(domain, sourceID)
-		if err != nil {
-			return err
+		row := existsStmt.QueryRow(domain, sourceID)
+		var tmp bool
+
+		if err = row.Scan(&tmp); err != nil {
+			if errors.Is(err, sql.ErrNoRows) {
+				_, err = addStmt.Exec(domain, sourceID)
+				if err != nil {
+					return 0, err
+				}
+
+				domainsCount++
+			} else {
+				return 0, err
+			}
 		}
 	}
 
-	return nil
+	return domainsCount, nil
 }
 
 func ClearSourceDomains(db dbConnection, sourceID int64) error {
