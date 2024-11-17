@@ -45,25 +45,30 @@ jobs:
         configs:
           - goos: "linux"
             goarch: "amd64"
+            os: ubuntu-latest
+            zigcmd: "-target x86_64-linux"
           - goos: "linux"
             goarch: "arm64"
-          - goos: "linux"
-            goarch: "arm"
+            os: ubuntu-latest
+            zigcmd: "-target aarch64-linux"
           - goos: "windows"
             goarch: "amd64"
+            os: ubuntu-latest
             ext: ".exe"
+            zigcmd: "-target x86_64-windows"
           - goos: "windows"
             goarch: "arm64"
+            os: ubuntu-latest
             ext: ".exe"
-          - goos: "windows"
-            goarch: "arm"
-            ext: ".exe"
+            zigcmd: "-target aarch64-windows"
           - goos: "darwin"
             goarch: "amd64"
+            os: macos-latest
           - goos: "darwin"
             goarch: "arm64"
+            os: macos-latest
 
-    runs-on: ubuntu-22.04
+    runs-on: ${{ matrix.configs.os }}
 
     permissions:
       contents: read
@@ -79,10 +84,29 @@ jobs:
         with:
           go-version: "${{ env.GO_VERSION }}"
 
-      - name: Build
+      - name: Set up Zig
+        if: ${{ matrix.configs.os == 'ubuntu-latest' }}
+        uses: mlugg/setup-zig@v1
+
+      - name: Build on linux
+        if: ${{ matrix.configs.os == 'ubuntu-latest' }}
         run: |
           go generate ./...
-          CGO_ENABLED=1 GOOS=${{ matrix.configs.goos }} GOARCH=${{ matrix.configs.goarch }} go build -v -o ./dist/gohole_${{ matrix.configs.goos }}_${{ matrix.configs.goarch }}${{ matrix.configs.ext }}
+          CGO_ENABLED=1 \
+          CC="zig cc ${{ matrix.configs.zigcmd }}" \
+          CXX="zig c++ ${{ matrix.configs.zigcmd }}" \
+          GOOS=${{ matrix.configs.goos }} \
+          GOARCH=${{ matrix.configs.goarch }} \
+          go build -v -o ./dist/gohole_${{ matrix.configs.goos }}_${{ matrix.configs.goarch }}${{ matrix.configs.ext }}
+
+      - name: Build on macOS
+        if: ${{ matrix.configs.os == 'macos-latest' }}
+        run: |
+          go generate ./...
+          CGO_ENABLED=1 \
+          GOOS=${{ matrix.configs.goos }} \
+          GOARCH=${{ matrix.configs.goarch }} \
+          go build -v -o ./dist/gohole_${{ matrix.configs.goos }}_${{ matrix.configs.goarch }}${{ matrix.configs.ext }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
