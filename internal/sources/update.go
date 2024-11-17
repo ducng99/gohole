@@ -105,13 +105,12 @@ func ForceUpdateSource(sourceID int64) error {
 	// Add all domains to database
 	logger.Printf(logger.LogNormal, "Adding %d domains to database\n", len(domains))
 
-	addedCount, err := db.AddDomains(tx, domains, sourceID)
-	if err != nil {
+	if err := db.AddDomains(tx, domains, sourceID); err != nil {
 		logger.Printf(logger.LogError, "Failed when adding domains to database\n")
 		return err
 	}
 
-	logger.Printf(logger.LogSuccess, "Added %d domains to database\n", addedCount)
+	logger.Printf(logger.LogSuccess, "Added %d domains to database\n", len(domains))
 
 	// Update source entry with stats
 	if err := db.UpdateSource(tx, sourceID, len(domains)); err != nil {

@@ -71,8 +71,7 @@ func (db *HoleDB) initDB() {
 
 	_, err = db.Conn.Exec(`CREATE TABLE IF NOT EXISTS hole_entries (
 		entry_domain TEXT NOT NULL,
-		source_id INTEGER NOT NULL,
-		PRIMARY KEY (entry_domain, source_id)
+		source_id INTEGER NOT NULL
 	)`)
 	if err != nil {
 		logger.Fatalf("Could not create `hole_entries` table.\n%v\n", err)
@@ -207,40 +206,21 @@ func RemoveSource(db dbConnection, sourceID int64) error {
 	return nil
 }
 
-func AddDomains(db dbConnection, domains []string, sourceID int64) (int, error) {
-	existsStmt, err := db.Prepare("SELECT 1 FROM hole_entries WHERE entry_domain = ? AND source_id = ?")
-	if err != nil {
-		return 0, err
-	}
-	defer existsStmt.Close()
-
+func AddDomains(db dbConnection, domains []string, sourceID int64) error {
 	addStmt, err := db.Prepare("INSERT INTO hole_entries (entry_domain, source_id) VALUES (?, ?)")
 	if err != nil {
-		return 0, err
+		return err
 	}
 	defer addStmt.Close()
 
-	domainsCount := 0
-
 	for _, domain := range domains {
-		row := existsStmt.QueryRow(domain, sourceID)
-		var tmp bool
-
-		if err = row.Scan(&tmp); err != nil {
-			if errors.Is(err, sql.ErrNoRows) {
-				_, err = addStmt.Exec(domain, sourceID)
-				if err != nil {
-					return 0, err
-				}
-
-				domainsCount++
-			} else {
-				return 0, err
-			}
+		_, err = addStmt.Exec(domain, sourceID)
+		if err != nil {
+			return err
 		}
 	}
 
-	return domainsCount, nil
+	return nil
 }
 
 func ClearSourceDomains(db dbConnection, sourceID int64) error {
