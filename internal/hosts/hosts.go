@@ -89,6 +89,11 @@ func writeToHosts(domains []string, filePath string, textBefore, textAfter strin
 	defer file.Close()
 	defer os.Remove(file.Name())
 
+	if err := chmod(file.Name(), 0o644); err != nil {
+		logger.Printf(logger.LogError, "Cannot update temp file permission\n")
+		return err
+	}
+
 	// Write start
 	if _, err = file.WriteString(textBefore + StartLine + lineEnding); err != nil {
 		logger.Printf(logger.LogError, "Cannot write to temp file\n")
