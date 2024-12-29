@@ -38,7 +38,7 @@ var updateCmd = &cobra.Command{
 		if len(args) > 0 {
 			sourceID, err := strconv.ParseInt(args[0], 10, 64)
 			if err != nil {
-				return err
+				return errors.New("sourceID must be an integer")
 			}
 
 			if sourceID < 1 {
