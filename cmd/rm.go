@@ -25,6 +25,7 @@ import (
 	"errors"
 	"strconv"
 
+	"github.com/ducng99/gohole/cmd/globalFlags"
 	"github.com/ducng99/gohole/internal/logger"
 	"github.com/ducng99/gohole/internal/sources"
 	"github.com/spf13/cobra"
@@ -32,8 +33,8 @@ import (
 
 // removeCmd represents the rm command
 var removeCmd = &cobra.Command{
-	Use:   "rm <source ID>",
-	Args: func (cmd *cobra.Command, args []string) error {
+	Use: "rm <source ID>",
+	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
 			return errors.New("require source ID provided as argument")
 		}
@@ -54,14 +55,14 @@ var removeCmd = &cobra.Command{
 		sourceID, _ := strconv.ParseInt(args[0], 10, 64)
 
 		if err := sources.RemoveSource(sourceID); err != nil {
-			if verbose {
+			if globalFlags.Verbose {
 				logger.Printf(logger.LogError, "%v\n", err)
 			}
 			return
 		}
 
 		if err := sources.WriteDomainsToHosts(); err != nil {
-			if verbose {
+			if globalFlags.Verbose {
 				logger.Printf(logger.LogError, "%v\n", err)
 			}
 			return

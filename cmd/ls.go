@@ -22,6 +22,7 @@ THE SOFTWARE.
 package cmd
 
 import (
+	"github.com/ducng99/gohole/cmd/globalFlags"
 	"github.com/ducng99/gohole/internal/logger"
 	"github.com/ducng99/gohole/internal/sources"
 	"github.com/spf13/cobra"
@@ -33,7 +34,7 @@ var lsCmd = &cobra.Command{
 	Short: "List all sources",
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := sources.ListSources(); err != nil {
-			if verbose {
+			if globalFlags.Verbose {
 				logger.Fatalf("%v", err)
 			}
 		}

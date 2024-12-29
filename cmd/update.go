@@ -25,6 +25,7 @@ import (
 	"errors"
 	"strconv"
 
+	"github.com/ducng99/gohole/cmd/globalFlags"
 	"github.com/ducng99/gohole/internal/logger"
 	"github.com/ducng99/gohole/internal/sources"
 	"github.com/spf13/cobra"
@@ -57,14 +58,14 @@ var updateCmd = &cobra.Command{
 
 		if sourceID > 0 {
 			if err := sources.UpdateSource(sourceID); err != nil {
-				if verbose {
+				if globalFlags.Verbose {
 					logger.Printf(logger.LogError, "%v\n", err)
 				}
 				return
 			}
 		} else {
 			if err := sources.UpdateAllSources(); err != nil {
-				if verbose {
+				if globalFlags.Verbose {
 					logger.Printf(logger.LogError, "%v\n", err)
 				}
 				return
@@ -72,7 +73,7 @@ var updateCmd = &cobra.Command{
 		}
 
 		if err := sources.WriteDomainsToHosts(); err != nil {
-			if verbose {
+			if globalFlags.Verbose {
 				logger.Printf(logger.LogError, "%v\n", err)
 			}
 			return

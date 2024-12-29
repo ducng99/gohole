@@ -22,6 +22,7 @@ THE SOFTWARE.
 package cmd
 
 import (
+	"github.com/ducng99/gohole/cmd/globalFlags"
 	"github.com/ducng99/gohole/internal/logger"
 	"github.com/ducng99/gohole/internal/sources"
 	"github.com/spf13/cobra"
@@ -34,14 +35,14 @@ var addCmd = &cobra.Command{
 	Short: "Add a new source file",
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := sources.AddSource(args[0]); err != nil {
-			if verbose {
+			if globalFlags.Verbose {
 				logger.Printf(logger.LogError, "%v\n", err)
 			}
 			return
 		}
 
 		if err := sources.WriteDomainsToHosts(); err != nil {
-			if verbose {
+			if globalFlags.Verbose {
 				logger.Printf(logger.LogError, "%v\n", err)
 			}
 			return
