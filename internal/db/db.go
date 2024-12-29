@@ -256,3 +256,21 @@ func GetDomains(db dbConnection) ([]IDomainEntry, error) {
 
 	return domains, nil
 }
+
+func HasDomain(db dbConnection, domain string) (bool, error) {
+	row := db.QueryRow("SELECT 1 FROM hole_entries WHERE entry_domain = ?", domain)
+	if err := row.Err(); err != nil {
+		return false, err
+	}
+
+	var exists bool
+	if err := row.Scan(&exists); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return false, nil
+		}
+
+		return false, err
+	}
+
+	return exists, nil
+}

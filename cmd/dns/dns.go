@@ -19,42 +19,19 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-package cmd
+package dns
 
 import (
-	"os"
-
-	"github.com/ducng99/gohole/cmd/dns"
-	"github.com/ducng99/gohole/cmd/globalFlags"
-	"github.com/ducng99/gohole/cmd/hosts"
+	"github.com/ducng99/gohole/internal/logger"
 	"github.com/spf13/cobra"
 )
 
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use:   "gohole",
-	Short: "A hosts file management tool.",
-	Long: `A tool to merge and manage multiple hosts files.
-
-Allow fetching, merging multiple sources into the local hosts file`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
-}
-
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
-func Execute(version string) {
-	rootCmd.Version = version
-
-	err := rootCmd.Execute()
-	if err != nil {
-		os.Exit(1)
-	}
-}
-
-func init() {
-	rootCmd.AddCommand(hosts.HostsCmd)
-	rootCmd.AddCommand(dns.DnsCmd)
-	rootCmd.PersistentFlags().BoolVarP(&globalFlags.Verbose, "verbose", "v", false, "Enable verbose logging")
+// dnsCmd represents the dns command
+var DnsCmd = &cobra.Command{
+	Use:   "dns",
+	Short: "DNS server",
+	Long:  `Custom DNS server to filter out requests with stored domains.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		logger.Printf(logger.LogNormal, "Run `gohole dns start` to start the server")
+	},
 }

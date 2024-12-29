@@ -8,7 +8,7 @@
 *.so
 *.dylib
 # Default `go build` output
-/goserve
+/gohole
 
 # Test binary, built with `go test -c`
 *.test
