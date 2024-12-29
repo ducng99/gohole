@@ -25,6 +25,7 @@ import (
 	"os"
 
 	"github.com/ducng99/gohole/cmd/globalFlags"
+	"github.com/ducng99/gohole/cmd/hosts"
 	"github.com/spf13/cobra"
 )
 
@@ -52,5 +53,6 @@ func Execute(version string) {
 }
 
 func init() {
+	rootCmd.AddCommand(hosts.HostsCmd)
 	rootCmd.PersistentFlags().BoolVarP(&globalFlags.Verbose, "verbose", "v", false, "Enable verbose logging")
 }

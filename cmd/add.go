@@ -41,12 +41,7 @@ var addCmd = &cobra.Command{
 			return
 		}
 
-		if err := sources.WriteDomainsToHosts(); err != nil {
-			if globalFlags.Verbose {
-				logger.Printf(logger.LogError, "%v\n", err)
-			}
-			return
-		}
+		logger.Printf(logger.LogSuccess, "Run `gohole hosts` to update sync the hosts file.")
 	},
 }
 
