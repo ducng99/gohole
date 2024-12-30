@@ -8,7 +8,7 @@ Prebuilt binaries are available in [Releases](https://github.com/ducng99/gohole/
 
 Store the file in a new directory.
 
-## Usage
+## Sources management
 
 ### Add a new source
 
@@ -42,11 +42,13 @@ To get a list of all added sources, run
 gohole ls
 ```
 
-### Hosts file
+## Usage
+
+### Method 1: Hosts file
 
 > [!WARNING]
 > Windows users should not use this method, large hosts file can cause system hang on start up.
-> See [DNS server](#dns-server)
+> See [DNS server](#method-2-dns-server) instead
 
 To update the local hosts file with domain entries from sources, run
 
@@ -54,7 +56,7 @@ To update the local hosts file with domain entries from sources, run
 gohole hosts
 ```
 
-### DNS server
+### Method 2: DNS server
 
 To start gohole as a DNS server, run
 
@@ -64,8 +66,8 @@ gohole dns start
 
 You can then use `127.0.0.1` as your DNS resolver.
 
-For Windows, see [this](https://www.windowscentral.com/how-change-your-pcs-dns-settings-windows-10#section-how-to-change-dns-settings-using-control-panel-on-windows-11)
-For Linux, see [this](https://www.makeuseof.com/find-and-change-dns-server-on-linux/#how-to-change-dns-server-on-linux) - you should know how already mate
+For Windows, see [this](https://www.windowscentral.com/how-change-your-pcs-dns-settings-windows-10#section-how-to-change-dns-settings-using-control-panel-on-windows-11)<br/>
+For Linux, see [this](https://www.makeuseof.com/find-and-change-dns-server-on-linux/#how-to-change-dns-server-on-linux) - you should know how already mate<br/>
 For MacOS, see [this](https://support.apple.com/guide/mac-help/change-dns-settings-on-mac-mh14127/mac)
 
 #### Autostart DNS server
