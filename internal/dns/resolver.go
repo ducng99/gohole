@@ -4,7 +4,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ducng99/gohole/cmd/globalFlags"
+	"github.com/ducng99/gohole/globals"
 	"github.com/ducng99/gohole/internal/db"
 	"github.com/ducng99/gohole/internal/logger"
 	"github.com/miekg/dns"
@@ -17,7 +17,7 @@ const (
 func resolver(domain string, qtype uint16) []dns.RR {
 	dnsEntry := getDomain(domain)
 	if dnsEntry.block {
-		if globalFlags.Verbose {
+		if globals.Verbose {
 			logger.Printf(logger.LogNormal, "[DNS]: Blocked %s\n", domain)
 		}
 		return nil
@@ -41,13 +41,13 @@ func resolver(domain string, qtype uint16) []dns.RR {
 	}
 
 	if response.Rcode != dns.RcodeSuccess {
-		if globalFlags.Verbose {
+		if globals.Verbose {
 			logger.Printf(logger.LogError, "[DNS]: no valid answer from %s for %s\n", upstreamDnsServer, domain)
 		}
 		return nil
 	}
 
-	if globalFlags.Verbose {
+	if globals.Verbose {
 		for _, answer := range response.Answer {
 			logger.Printf(logger.LogNormal, "[DNS]: %s\n", answer.String())
 		}

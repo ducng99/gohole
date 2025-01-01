@@ -22,7 +22,7 @@ THE SOFTWARE.
 package dns
 
 import (
-	"github.com/ducng99/gohole/cmd/globalFlags"
+	"github.com/ducng99/gohole/globals"
 	"github.com/ducng99/gohole/internal/dns"
 	"github.com/ducng99/gohole/internal/logger"
 	"github.com/spf13/cobra"
@@ -34,7 +34,7 @@ var autoStartCmd = &cobra.Command{
 	Short: "Register gohole to autostart",
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := dns.RegisterAutostart(); err != nil {
-			if globalFlags.Verbose {
+			if globals.Verbose {
 				logger.Printf(logger.LogError, "Failed when registering DNS server for autostart: %v\n", err)
 			}
 			return

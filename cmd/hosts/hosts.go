@@ -22,7 +22,7 @@ THE SOFTWARE.
 package hosts
 
 import (
-	"github.com/ducng99/gohole/cmd/globalFlags"
+	"github.com/ducng99/gohole/globals"
 	"github.com/ducng99/gohole/internal/logger"
 	"github.com/ducng99/gohole/internal/sources"
 	"github.com/spf13/cobra"
@@ -35,7 +35,7 @@ var HostsCmd = &cobra.Command{
 	Long: `Sync hosts file entries with the ones stored by gohole.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := sources.WriteDomainsToHosts(); err != nil {
-			if globalFlags.Verbose {
+			if globals.Verbose {
 				logger.Printf(logger.LogError, "%v\n", err)
 			}
 			return

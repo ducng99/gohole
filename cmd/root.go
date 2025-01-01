@@ -25,7 +25,7 @@ import (
 	"os"
 
 	"github.com/ducng99/gohole/cmd/dns"
-	"github.com/ducng99/gohole/cmd/globalFlags"
+	"github.com/ducng99/gohole/globals"
 	"github.com/ducng99/gohole/cmd/hosts"
 	"github.com/spf13/cobra"
 )
@@ -56,5 +56,5 @@ func Execute(version string) {
 func init() {
 	rootCmd.AddCommand(hosts.HostsCmd)
 	rootCmd.AddCommand(dns.DnsCmd)
-	rootCmd.PersistentFlags().BoolVarP(&globalFlags.Verbose, "verbose", "v", false, "Enable verbose logging")
+	rootCmd.PersistentFlags().BoolVarP(&globals.Verbose, "verbose", "v", false, "Enable verbose logging")
 }
