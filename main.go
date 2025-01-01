@@ -23,10 +23,11 @@ package main
 
 import (
 	"github.com/ducng99/gohole/cmd"
+	"github.com/ducng99/gohole/globals"
 	"github.com/ducng99/gohole/internal/db"
 )
 
 func main() {
 	defer db.New().Close()
-	cmd.Execute(version)
+	cmd.Execute(globals.Version)
 }
