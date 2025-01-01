@@ -25,8 +25,9 @@ import (
 	"os"
 
 	"github.com/ducng99/gohole/cmd/dns"
-	"github.com/ducng99/gohole/globals"
 	"github.com/ducng99/gohole/cmd/hosts"
+	"github.com/ducng99/gohole/globals"
+	"github.com/ducng99/gohole/internal/logger"
 	"github.com/spf13/cobra"
 )
 
@@ -37,9 +38,9 @@ var rootCmd = &cobra.Command{
 	Long: `A tool to merge and manage multiple hosts files.
 
 Allow fetching, merging multiple sources into the local hosts file`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		logger.Printf(logger.LogNormal, "gohole %s\n", globals.Version)
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
