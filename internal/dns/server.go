@@ -1,6 +1,10 @@
 package dns
 
 import (
+	"os"
+	"os/signal"
+	"syscall"
+
 	"github.com/ducng99/gohole/internal/logger"
 	"github.com/miekg/dns"
 )
@@ -21,7 +25,24 @@ func StartDNSServer() error {
 
 	logger.Printf(logger.LogNormal, "Starting DNS server on port 53\n")
 
-	return server.ListenAndServe()
+	go func() {
+		if err := server.ListenAndServe(); err != nil {
+			logger.Printf(logger.LogError, "[DNS] Server error: %v\n", err)
+		}
+	}()
+
+	logger.Printf(logger.LogSuccess, "DNS server listening on port 53\n")
+
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+	<-sigChan
+
+	if err := server.Shutdown(); err != nil {
+		logger.Fatalf("DNS server shutdown error: %v\n", err)
+	}
+
+	logger.Printf(logger.LogNormal, "DNS server graceful shutdown.\n")
+	return nil
 }
 
 func (h *dnsHandler) ServeDNS(w dns.ResponseWriter, r *dns.Msg) {

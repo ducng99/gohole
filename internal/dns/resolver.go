@@ -41,7 +41,9 @@ func resolver(domain string, qtype uint16) []dns.RR {
 	}
 
 	if response.Rcode != dns.RcodeSuccess {
-		logger.Printf(logger.LogError, "[DNS]: no valid answer from %s for %s\n", upstreamDnsServer, domain)
+		if globalFlags.Verbose {
+			logger.Printf(logger.LogError, "[DNS]: no valid answer from %s for %s\n", upstreamDnsServer, domain)
+		}
 		return nil
 	}
 
@@ -75,7 +77,9 @@ func getDomain(domain string) *cachedDnsEntry {
 			eat:   time.Now().Add(cacheExpireDuration),
 		}
 
+		cacheLock.Lock()
 		cacheDNS[domain] = entry
+		cacheLock.Unlock()
 	}
 
 	return entry
