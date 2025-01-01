@@ -12,7 +12,7 @@ import (
 )
 
 func getHostsFilePath() (string, error) {
-	kernel32:= syscall.NewLazyDLL("kernel32.dll")
+	kernel32 := syscall.NewLazyDLL("kernel32.dll")
 	getWindowsDirectoryHandle := kernel32.NewProc("GetWindowsDirectoryA")
 
 	windowsDir := make([]byte, 260)

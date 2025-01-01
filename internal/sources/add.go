@@ -36,4 +36,3 @@ func AddSource(url string) error {
 
 	return nil
 }
-

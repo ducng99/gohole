@@ -14,13 +14,13 @@ import (
 )
 
 type GHReleaseResponse struct {
-	TagName string `json:"tag_name"`
-	Assets []GHReleaseAsset `json:"assets"`
+	TagName string           `json:"tag_name"`
+	Assets  []GHReleaseAsset `json:"assets"`
 }
 
 type GHReleaseAsset struct {
 	Name string `json:"name"`
-	Url string `json:"browser_download_url"`
+	Url  string `json:"browser_download_url"`
 }
 
 func RunTemp() error {

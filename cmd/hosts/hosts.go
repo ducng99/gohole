@@ -32,7 +32,7 @@ import (
 var HostsCmd = &cobra.Command{
 	Use:   "hosts",
 	Short: "Sync hosts file",
-	Long: `Sync hosts file entries with the ones stored by gohole.`,
+	Long:  `Sync hosts file entries with the ones stored by gohole.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := sources.WriteDomainsToHosts(); err != nil {
 			if globals.Verbose {

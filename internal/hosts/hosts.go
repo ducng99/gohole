@@ -105,21 +105,21 @@ func writeToHosts(domains []string, filePath string, textBefore, textAfter strin
 	for _, domain := range domains {
 		if lineDomainsCount == 0 {
 			if _, err = file.WriteString("0.0.0.0 " + domain); err != nil {
-		logger.Printf(logger.LogError, "Cannot write to temp file\n")
+				logger.Printf(logger.LogError, "Cannot write to temp file\n")
 				return err
 			}
 
 			lineDomainsCount++
 		} else if lineDomainsCount == 8 {
 			if _, err = file.WriteString(" " + domain + lineEnding); err != nil {
-		logger.Printf(logger.LogError, "Cannot write to temp file\n")
+				logger.Printf(logger.LogError, "Cannot write to temp file\n")
 				return err
 			}
 
 			lineDomainsCount = 0
 		} else {
 			if _, err = file.WriteString(" " + domain); err != nil {
-		logger.Printf(logger.LogError, "Cannot write to temp file\n")
+				logger.Printf(logger.LogError, "Cannot write to temp file\n")
 				return err
 			}
 

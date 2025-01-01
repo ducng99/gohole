@@ -35,7 +35,7 @@ func handleLine(line string) []string {
 	// Skip first field as it contains IP
 	for i := 1; i < len(fields); i++ {
 		if strings.HasPrefix(fields[i], "#") {
-			break;
+			break
 		}
 
 		domains = append(domains, fields[i])
