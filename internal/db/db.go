@@ -41,7 +41,7 @@ func New() *HoleDB {
 
 		_db, err := sql.Open("sqlite3", "file:gohole.db")
 		if err != nil {
-			logger.Fatalf("%v", err)
+			logger.Fatalf("%v\n", err)
 		}
 
 		db = &HoleDB{

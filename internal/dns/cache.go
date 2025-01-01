@@ -12,8 +12,10 @@ type cachedDnsEntry struct {
 	eat   time.Time
 }
 
-var cacheDNS = map[string]*cachedDnsEntry{}
-var cacheLock sync.RWMutex
+var (
+	cacheDNS  = map[string]*cachedDnsEntry{}
+	cacheLock sync.RWMutex
+)
 
 func StartCacheCleaner() {
 	go func() {
